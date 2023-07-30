@@ -1,0 +1,88 @@
+﻿<Window x:Class="MarkerBoard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MarkerBoard"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        WindowStyle="None"
+        Title="MainWindow" Height="700" Width="1300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Transparent">
+
+    <Grid Margin="4" ClipToBounds="True">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width=".2*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+
+        <Border Background="White" CornerRadius="20" Grid.ColumnSpan="2">
+            <Border.Effect>
+                <DropShadowEffect ShadowDepth="0" BlurRadius="50"/>
+            </Border.Effect>
+        </Border>
+
+
+        <InkCanvas  x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" MouseMove="inkCanvas_MouseMove" Cursor="Pen" Background="White"/>
+
+
+        <WrapPanel Margin="-168,5,1060,5" Grid.ColumnSpan="2" x:Name="InstrumentPanel">
+
+            <Image x:Name="Eraser" Source="/eraser.png" Margin="40, 20, 0, 10" Height="100" Width="200" MouseLeftButtonDown="Eraser_MouseLeftButtonDown" MouseLeftButtonUp="Eraser_MouseLeftButtonUp"/>
+
+            <Button Margin="0, 5, 5, 5" Height="55" Width="250" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+                <Image Source="/marker.png" Margin="70, 0, 0, 0">
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="White"/>
+                    </Image.Effect>
+                </Image>
+            </Button>
+
+            <Image Margin="50"/>
+
+            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/blueMarker.png" Margin="70, 0, 0, 0">
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="White"/>
+                    </Image.Effect>
+                </Image>
+
+            </Button>
+            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/redMarker.png" Margin="70, 0, 0, 0">
+                    <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="White"/>
+                    </Image.Effect>
+                </Image>
+            </Button>
+            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+                <Image Source="/greenMarker.png" Margin="70, 0, 0, 0">
+                     <Image.Effect>
+                        <DropShadowEffect ShadowDepth="0" Color="White"/>
+                    </Image.Effect>
+                </Image>
+            </Button>
+
+            <Slider Orientation="Vertical" Maximum="30" Minimum="5" ValueChanged="Slider_ValueChanged" Height="150" Margin="200,42,0,41" MouseMove="Slider_MouseMove">
+
+            </Slider>
+            <RadioButton x:Name="brushScaleImage" RenderTransformOrigin="0.5,0.5" Height="15" IsEnabled="False" Margin="10">
+                <RadioButton.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform ScaleX="2" ScaleY="2"/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </RadioButton.RenderTransform>
+            </RadioButton>
+        </WrapPanel>
+
+        <Grid Margin="15,444,0,15">
+
+
+
+        </Grid>
+    </Grid>
+</Window>

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="blueMarker.png" />
+    <None Remove="eraser.png" />
+    <None Remove="greenMarker.png" />
+    <None Remove="marker.png" />
+    <None Remove="redMarker.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="blueMarker.png" />
+    <Resource Include="eraser.png" />
+    <Resource Include="greenMarker.png" />
+    <Resource Include="marker.png" />
+    <Resource Include="redMarker.png" />
+  </ItemGroup>
+
+</Project>
