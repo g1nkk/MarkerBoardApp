@@ -14,9 +14,11 @@
     <None Remove="copy.png" />
     <None Remove="eraser.png" />
     <None Remove="greenMarker.png" />
+    <None Remove="hide.png" />
     <None Remove="marker.png" />
     <None Remove="minimize.png" />
     <None Remove="redMarker.png" />
+    <None Remove="show.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,9 +28,11 @@
     <Resource Include="copy.png" />
     <Resource Include="eraser.png" />
     <Resource Include="greenMarker.png" />
+    <Resource Include="hide.png" />
     <Resource Include="marker.png" />
     <Resource Include="minimize.png" />
     <Resource Include="redMarker.png" />
+    <Resource Include="show.png" />
   </ItemGroup>
 
 </Project>

@@ -25,26 +25,24 @@ namespace MarkerBoard
 
         Button currentMarkerSelected;
 
-        ThicknessAnimation showMarkerAnimation = new ThicknessAnimation
-        {
-            To = new Thickness(50, 5, 5, 5),
-            Duration = TimeSpan.FromMilliseconds(200),
-            EasingFunction = new PowerEase()
-        };
+        ThicknessAnimation showMarkerAnimation;
 
-        ThicknessAnimation hideMarkerAnimation = new ThicknessAnimation
-        {
-            To = new Thickness(0, 5, 5, 5),
-            Duration = TimeSpan.FromMilliseconds(200),
-            EasingFunction = new PowerEase()
-        };
+        ThicknessAnimation hideMarkerAnimation;
 
-        DoubleAnimation hideAnimation;
+        DoubleAnimation hideNotificationAnimation;
 
         DoubleAnimation showNotificationPanelAnimation;
 
         DoubleAnimation showCanvasAnimation;
         DoubleAnimation hideCanvasAnimation;
+
+        DoubleAnimation defaultHideAnimation;
+        DoubleAnimation InstrumentPanelHideAnimation;
+        DoubleAnimation defaultShowAnimation;
+        DoubleAnimation defaultShortShowAnimation;
+
+        DoubleAnimation showButtonHideAnimation;
+        DoubleAnimation showButtonShowAnimation;
 
         List<Color> colors = new List<Color>();
 
@@ -54,11 +52,11 @@ namespace MarkerBoard
             InitializeEraser();
             InitializeColors();
             InitializeAnimations();
-            InitializeDefautComponents();
+            InitializeDefaultComponents();
             //DataContext = Resources["ViewModel"];
         }
 
-        void InitializeDefautComponents()
+        void InitializeDefaultComponents()
         {
             currentMarkerSelected = defaultMarker;
             defaultMarker.BeginAnimation(MarginProperty, showMarkerAnimation);
@@ -68,25 +66,87 @@ namespace MarkerBoard
 
         void InitializeAnimations()
         {
-            hideAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(1300)));
-            hideAnimation.EasingFunction = new QuadraticEase();
+            showMarkerAnimation = new ThicknessAnimation
+            {
+                To = new Thickness(50, 5, 5, 5),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new PowerEase()
+            };
+            hideMarkerAnimation = new ThicknessAnimation
+            {
+                To = new Thickness(0, 5, 5, 5),
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new PowerEase()
+            };
+
+            defaultShowAnimation = new DoubleAnimation
+            {
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(750),
+                EasingFunction = new PowerEase()
+            };
+            defaultShortShowAnimation = new DoubleAnimation
+            {
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(350),
+                EasingFunction = new PowerEase()
+            };
+            defaultHideAnimation = new DoubleAnimation
+            {
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(1100),
+                EasingFunction= new PowerEase()
+            };
+            showButtonShowAnimation = new DoubleAnimation
+            {
+                From = 0,
+                To = 1,
+                Duration = TimeSpan.FromMilliseconds(2200),
+                EasingFunction = new PowerEase()
+            };
+            showButtonHideAnimation = new DoubleAnimation
+            {
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(150),
+                EasingFunction = new PowerEase()
+            };
+            showButtonHideAnimation.Completed += (sender, e) =>
+            {
+                showButton.Visibility = Visibility.Collapsed;
+            };
+            InstrumentPanelHideAnimation = new DoubleAnimation
+            {
+                To = 0,
+                Duration = TimeSpan.FromMilliseconds(200),
+                EasingFunction = new PowerEase()
+            };
+            InstrumentPanelHideAnimation.Completed += (sender, e) =>
+            {
+                InstrumentPanel.Visibility = Visibility.Collapsed;
+            };
+
+            hideNotificationAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(1300)));
+            hideNotificationAnimation.EasingFunction = new QuadraticEase();
+            hideNotificationAnimation.Completed += (sender, e) =>
+            {
+                NotificationsPanel.Visibility = Visibility.Collapsed;
+            };
 
             showNotificationPanelAnimation = new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(400)));
             showNotificationPanelAnimation.EasingFunction = new PowerEase();
+            showNotificationPanelAnimation.Completed += (sender, e) =>
+            {
+                NotificationsPanel.BeginAnimation(OpacityProperty, hideNotificationAnimation);
+            };
 
             showCanvasAnimation = new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(50)));
-            hideCanvasAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(250)));
 
+            hideCanvasAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(250)));
             hideCanvasAnimation.EasingFunction = new PowerEase();
             hideCanvasAnimation.Completed += (sender, e) =>
             {
                 inkCanvas.Strokes.Clear();
                 inkCanvas.BeginAnimation(OpacityProperty, showCanvasAnimation);
-            };
-
-            showNotificationPanelAnimation.Completed += (sender, e) =>
-            {
-                NotificationsPanel.BeginAnimation(OpacityProperty, hideAnimation);
             };
         }
 
@@ -96,6 +156,7 @@ namespace MarkerBoard
             colors.Add(Color.FromRgb(243, 78, 78));
             colors.Add(Color.FromRgb(91, 248, 157));
             colors.Add(Colors.Black);
+            colors.Add(Colors.White);
         }
 
         void InitializeEraser()
@@ -179,10 +240,15 @@ namespace MarkerBoard
             var button = sender as Button;
             int buttonTag = Convert.ToInt32(button.Tag);
 
-            if (currentMarkerSelected != null) // hide chosen marker
+
+            currentMarkerSelected.BeginAnimation(MarginProperty, hideMarkerAnimation);
+
+            if (buttonTag == 4) //eraser
             {
-                currentMarkerSelected.BeginAnimation(MarginProperty, hideMarkerAnimation);
+                inkCanvas.UseCustomCursor = true;
+                inkCanvas.Cursor = Cursors.Cross;
             }
+            else inkCanvas.UseCustomCursor = false;
 
             currentMarkerSelected = button;
 
@@ -193,6 +259,7 @@ namespace MarkerBoard
 
         void ShowNotification(string message)
         {
+            NotificationsPanel.Visibility = Visibility.Visible;
             NotificationsText.Text = message;
             NotificationsPanel.BeginAnimation(OpacityProperty, showNotificationPanelAnimation);
         }
@@ -211,10 +278,55 @@ namespace MarkerBoard
             ShowNotification("Copied to Clipboard!");
         }
 
+        void HideButton_Click(object sender, RoutedEventArgs e)
+        {
+            ScaleTransform scaleTransform = FindScaleTransform();
+
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, defaultHideAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, defaultHideAnimation);
+            InstrumentPanel.BeginAnimation(OpacityProperty, InstrumentPanelHideAnimation);
+            showButton.Visibility = Visibility.Visible;
+            showButton.BeginAnimation(OpacityProperty, showButtonShowAnimation);
+        }
+        
+        void ShowButton_Click(object sender, RoutedEventArgs e) 
+        {
+            InstrumentPanel.Visibility = Visibility.Visible;
+
+            ScaleTransform scaleTransform = FindScaleTransform();
+
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleXProperty, defaultShortShowAnimation);
+            scaleTransform.BeginAnimation(ScaleTransform.ScaleYProperty, defaultShortShowAnimation);
+            InstrumentPanel.BeginAnimation(OpacityProperty, defaultShowAnimation);
+            showButton.BeginAnimation(OpacityProperty, showButtonHideAnimation);
+        }
+
+        private ScaleTransform FindScaleTransform()
+        {
+            // Находим ScaleTransform в TransformGroup у элемента InstrumentPanel
+            TransformGroup transformGroup = InstrumentPanel.RenderTransform as TransformGroup;
+            if (transformGroup != null)
+            {
+                foreach (Transform transform in transformGroup.Children)
+                {
+                    if (transform is ScaleTransform scaleTransform)
+                    {
+                        return scaleTransform;
+                    }
+                }
+            }
+
+            // Если ScaleTransform не найден, создаем новый и добавляем его в TransformGroup
+            ScaleTransform newScaleTransform = new ScaleTransform();
+            transformGroup.Children.Add(newScaleTransform);
+
+            return newScaleTransform;
+        }
+
         private void ClearCanvas_Click(object sender, RoutedEventArgs e)
         {
             inkCanvas.BeginAnimation(OpacityProperty, hideCanvasAnimation);
-            ShowNotification("Canvas Cleared!");
+            ShowNotification("Canvas Cleaned!");
         }
 
         private void MinimizeButton_Click(object sender, RoutedEventArgs e)

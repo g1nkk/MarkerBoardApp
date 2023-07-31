@@ -18,9 +18,13 @@
 
         <Border Background="White" CornerRadius="20" Grid.ColumnSpan="2"/>
 
-        <InkCanvas  x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" Cursor="Pen" Background="White"/>
+        <InkCanvas x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" Cursor="Pen" Background="White" EditingModeInverted="EraseByPoint"/>
 
-        <WrapPanel Margin="-168,5,1060,5" Grid.ColumnSpan="2" x:Name="InstrumentPanel" RenderTransformOrigin="0,0.5">
+        <Button x:Name="showButton" Opacity="0" HorizontalAlignment="Left" Style="{StaticResource controlDefault}" Click="ShowButton_Click">
+            <Image  Height="50" Source="/show.png"/>
+        </Button>
+
+        <WrapPanel x:Name="InstrumentPanel" Margin="-168,5,1060,5" Grid.ColumnSpan="2" RenderTransformOrigin="0.25,0.5">
             <WrapPanel.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform ScaleX="1"/>
@@ -37,11 +41,15 @@
                 <Image Source="/close.png"/>
             </Button>
 
-            <Button Style="{StaticResource markers}">
-                <Image x:Name="Eraser" Source="/eraser.png" Margin="40, 20, 0, 10" Height="100" Width="200" MouseLeftButtonDown="Eraser_MouseLeftButtonDown" MouseLeftButtonUp="Eraser_MouseLeftButtonUp"/>
+            <Button Style="{StaticResource controlDefault}" Width="21" Height="21"  Margin="5,3,0,0" Click="HideButton_Click" >
+                <Image Source="/hide.png"/>
             </Button>
 
-            <Button Tag="3" Style="{StaticResource markers}" x:Name="defaultMarker"  Margin="0, 5, 5, 5" Height="55" Width="250" Click="Button_Click" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+            <Button Tag="4" Style="{StaticResource markers}"  Margin="0, 5, 5, 5" x:Name="Eraser" Click="Button_Click">
+                <Image  Source="/eraser.png" Margin="40, 20, 0, 0" Height="100" Width="200" MouseLeftButtonDown="Eraser_MouseLeftButtonDown" MouseLeftButtonUp="Eraser_MouseLeftButtonUp"/>
+            </Button>
+
+            <Button Tag="3" Style="{StaticResource markers}" x:Name="defaultMarker"  Margin="0, 5, 5, 5" Height="55" Width="250" Click="Button_Click">
                 <Image Source="/marker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
@@ -51,7 +59,7 @@
 
             <Image Margin="50"/>
 
-            <Button Tag="0" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
+            <Button Tag="0" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
                 <Image Source="/blueMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
@@ -59,21 +67,21 @@
                 </Image>
 
             </Button>
-            <Button Tag="1" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
+            <Button Tag="1" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
                 <Image Source="/redMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
             </Button>
-            <Button Tag="2" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
+            <Button Tag="2" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
                 <Image Source="/greenMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
             </Button>
-            <Slider Orientation="Vertical" Maximum="30" Minimum="3" ValueChanged="Slider_ValueChanged" Height="150" Margin="190,50,0,30" MouseMove="Slider_MouseMove" Value="11"/>
+            <Slider Orientation="Vertical" Maximum="40" Minimum="3" ValueChanged="Slider_ValueChanged" Height="150" Margin="190,50,5,50" MouseMove="Slider_MouseMove" Value="11"/>
             <RadioButton x:Name="brushScaleImage" RenderTransformOrigin="0.5,0.5" Height="15" IsEnabled="False" Margin="12">
                 <RadioButton.RenderTransform>
                     <TransformGroup>
