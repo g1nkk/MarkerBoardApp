@@ -61,7 +61,56 @@
 
         </Style>
 
+        <Style x:Key="markers" TargetType="Button">
+            <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <EventTrigger RoutedEvent="Button.Click">
 
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="0.8" Duration="0:0:0.05"/>
+
+                            <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="{x:Null}" Duration="0:0:0.4"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger>
+                <Trigger Property="IsMouseOver" Value="True">
+
+                    <Trigger.EnterActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="0.9" Duration="0:0:0.1"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.EnterActions>
+
+                    <Trigger.ExitActions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.4"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </Trigger.ExitActions>
+
+                </Trigger>
+
+            </Style.Triggers>
+
+        </Style>
 
     </Application.Resources>
 </Application>

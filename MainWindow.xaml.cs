@@ -18,16 +18,33 @@ using System.Windows.Shapes;
 
 namespace MarkerBoard
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private Point startPoint;
         private TranslateTransform translation;
 
-        DoubleAnimation showAnimation;
+        Button currentMarkerSelected;
+
+        ThicknessAnimation showMarkerAnimation = new ThicknessAnimation
+        {
+            To = new Thickness(50, 5, 5, 5),
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new PowerEase()
+        };
+
+        ThicknessAnimation hideMarkerAnimation = new ThicknessAnimation
+        {
+            To = new Thickness(0, 5, 5, 5),
+            Duration = TimeSpan.FromMilliseconds(200),
+            EasingFunction = new PowerEase()
+        };
+
         DoubleAnimation hideAnimation;
+
+        DoubleAnimation showNotificationPanelAnimation;
+
+        DoubleAnimation showCanvasAnimation;
+        DoubleAnimation hideCanvasAnimation;
 
         List<Color> colors = new List<Color>();
 
@@ -37,19 +54,40 @@ namespace MarkerBoard
             InitializeEraser();
             InitializeColors();
             InitializeAnimations();
+            InitializeDefautComponents();
             //DataContext = Resources["ViewModel"];
+        }
+
+        void InitializeDefautComponents()
+        {
+            currentMarkerSelected = defaultMarker;
+            defaultMarker.BeginAnimation(MarginProperty, showMarkerAnimation);
+            inkCanvas.DefaultDrawingAttributes.Width = 11;
+            inkCanvas.DefaultDrawingAttributes.Height = 11;
         }
 
         void InitializeAnimations()
         {
-            showAnimation = new DoubleAnimation(1f, new Duration(TimeSpan.FromMilliseconds(100)));
-            hideAnimation = new DoubleAnimation(0f, new Duration(TimeSpan.FromMilliseconds(250)));
-            hideAnimation.Completed += (sender, e) =>
+            hideAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(1300)));
+            hideAnimation.EasingFunction = new QuadraticEase();
+
+            showNotificationPanelAnimation = new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(400)));
+            showNotificationPanelAnimation.EasingFunction = new PowerEase();
+
+            showCanvasAnimation = new DoubleAnimation(1, new Duration(TimeSpan.FromMilliseconds(50)));
+            hideCanvasAnimation = new DoubleAnimation(0, new Duration(TimeSpan.FromMilliseconds(250)));
+
+            hideCanvasAnimation.EasingFunction = new PowerEase();
+            hideCanvasAnimation.Completed += (sender, e) =>
             {
                 inkCanvas.Strokes.Clear();
-                inkCanvas.BeginAnimation(OpacityProperty, showAnimation);
+                inkCanvas.BeginAnimation(OpacityProperty, showCanvasAnimation);
             };
-            hideAnimation.EasingFunction = new PowerEase();
+
+            showNotificationPanelAnimation.Completed += (sender, e) =>
+            {
+                NotificationsPanel.BeginAnimation(OpacityProperty, hideAnimation);
+            };
         }
 
         void InitializeColors()
@@ -110,9 +148,14 @@ namespace MarkerBoard
 
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            var slider = sender as Slider;
-            inkCanvas.DefaultDrawingAttributes.Width = slider.Value;
-            inkCanvas.DefaultDrawingAttributes.Height = slider.Value;
+            if (IsInitialized)
+            {
+                var slider = sender as Slider;
+                inkCanvas.DefaultDrawingAttributes.Width = slider.Value;
+                inkCanvas.DefaultDrawingAttributes.Height = slider.Value;
+
+                ShowNotification($"marker thickness: {((int)slider.Value)}");
+            }
         }
 
         private void Slider_MouseMove(object sender, MouseEventArgs e)
@@ -136,7 +179,22 @@ namespace MarkerBoard
             var button = sender as Button;
             int buttonTag = Convert.ToInt32(button.Tag);
 
+            if (currentMarkerSelected != null) // hide chosen marker
+            {
+                currentMarkerSelected.BeginAnimation(MarginProperty, hideMarkerAnimation);
+            }
+
+            currentMarkerSelected = button;
+
+            currentMarkerSelected.BeginAnimation(MarginProperty, showMarkerAnimation);
+
             inkCanvas.DefaultDrawingAttributes.Color = colors[buttonTag];
+        }
+
+        void ShowNotification(string message)
+        {
+            NotificationsText.Text = message;
+            NotificationsPanel.BeginAnimation(OpacityProperty, showNotificationPanelAnimation);
         }
 
         private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
@@ -149,11 +207,24 @@ namespace MarkerBoard
             rtb.Render(inkCanvas);
 
             Clipboard.SetImage(rtb);
+
+            ShowNotification("Copied to Clipboard!");
         }
 
         private void ClearCanvas_Click(object sender, RoutedEventArgs e)
         {
-            inkCanvas.BeginAnimation(OpacityProperty, hideAnimation);
+            inkCanvas.BeginAnimation(OpacityProperty, hideCanvasAnimation);
+            ShowNotification("Canvas Cleared!");
+        }
+
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
