@@ -26,94 +26,38 @@ namespace MarkerBoard
         private Point startPoint;
         private TranslateTransform translation;
 
-        Color drawingColor = Color.FromRgb(0, 0, 0);
-        double drawingSize = 20;
+        DoubleAnimation showAnimation;
+        DoubleAnimation hideAnimation;
 
+        List<Color> colors = new List<Color>();
 
-        private Point previousPoint;
-        private bool isDrawing;
         public MainWindow()
         {
             InitializeComponent();
             InitializeEraser();
+            InitializeColors();
+            InitializeAnimations();
             //DataContext = Resources["ViewModel"];
         }
 
-
-        private void inkCanvas_MouseMove(object sender, MouseEventArgs e)
+        void InitializeAnimations()
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            showAnimation = new DoubleAnimation(1f, new Duration(TimeSpan.FromMilliseconds(100)));
+            hideAnimation = new DoubleAnimation(0f, new Duration(TimeSpan.FromMilliseconds(250)));
+            hideAnimation.Completed += (sender, e) =>
             {
-                Point currentPoint = e.GetPosition(inkCanvas);
-                if (!isDrawing)
-                {
-                    // Начало нового рисунка
-                    previousPoint = currentPoint;
-                    isDrawing = true;
-                }
-
-                // Сглаживание линий
-                List<Point> smoothedPoints = SmoothLine(previousPoint, currentPoint);
-
-                // Рисование линии сглаженными точками
-                for (int i = 1; i < smoothedPoints.Count; i++)
-                {
-                    var inkStroke = new System.Windows.Ink.Stroke(
-                        new StylusPointCollection(new[]
-                        {
-                            new StylusPoint(smoothedPoints[i - 1].X, smoothedPoints[i - 1].Y),
-                            new StylusPoint(smoothedPoints[i].X, smoothedPoints[i].Y)
-                        }));
-
-                    inkStroke.DrawingAttributes.Color = drawingColor;
-                    inkStroke.DrawingAttributes.Height = drawingSize;
-                    inkStroke.DrawingAttributes.Width = drawingSize;
-
-                    inkCanvas.Strokes.Add(inkStroke);
-                }
-
-                // Обновление предыдущей точки
-                previousPoint = currentPoint;
-            }
-            else
-            {
-                isDrawing = false;
-            }
+                inkCanvas.Strokes.Clear();
+                inkCanvas.BeginAnimation(OpacityProperty, showAnimation);
+            };
+            hideAnimation.EasingFunction = new PowerEase();
         }
 
-        // Сглаживание линии методом интерполяции средних точек
-        private List<Point> SmoothLine(Point startPoint, Point endPoint)
+        void InitializeColors()
         {
-            List<Point> points = new List<Point>();
-            points.Add(startPoint);
-
-            double deltaX = endPoint.X - startPoint.X;
-            double deltaY = endPoint.Y - startPoint.Y;
-
-            if (System.Math.Abs(deltaX) > System.Math.Abs(deltaY))
-            {
-                double slope = deltaY / deltaX;
-                double step = deltaX > 0 ? 1 : -1;
-
-                for (double x = startPoint.X + step; step > 0 ? x <= endPoint.X : x >= endPoint.X; x += step)
-                {
-                    double y = startPoint.Y + slope * (x - startPoint.X);
-                    points.Add(new Point(x, y));
-                }
-            }
-            else
-            {
-                double slope = deltaX / deltaY;
-                double step = deltaY > 0 ? 1 : -1;
-
-                for (double y = startPoint.Y + step; step > 0 ? y <= endPoint.Y : y >= endPoint.Y; y += step)
-                {
-                    double x = startPoint.X + slope * (y - startPoint.Y);
-                    points.Add(new Point(x, y));
-                }
-            }
-
-            return points;
+            colors.Add(Color.FromRgb(91, 192, 248));
+            colors.Add(Color.FromRgb(243, 78, 78));
+            colors.Add(Color.FromRgb(91, 248, 157));
+            colors.Add(Colors.Black);
         }
 
         void InitializeEraser()
@@ -121,21 +65,18 @@ namespace MarkerBoard
             translation = new TranslateTransform();
             Eraser.RenderTransform = translation;
 
-            CompositionTarget.Rendering += CompositionTarget_Rendering;
+            CompositionTarget.Rendering += SmoothEraserMove;
         }
 
-        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        private void SmoothEraserMove(object sender, EventArgs e)
         {
-            var eraser = InstrumentPanel.Children[0] as Image; // Предполагаем, что eraser - первый элемент в canvas
+            var eraser = InstrumentPanel.Children[0] as Image; // eraser - first canvas child
 
-            // Проверяем, что куб был захвачен мышью
-            if (eraser.IsMouseCaptured)
+            if (eraser != null && eraser.IsMouseCaptured)
             {
-                // Вычисляем новые координаты куба на основе смещения мыши
                 double x = Mouse.GetPosition(InstrumentPanel).X - startPoint.X;
                 double y = Mouse.GetPosition(InstrumentPanel).Y - startPoint.Y;
 
-                // Плавно перемещаем куб к новым координатам
                 var animation = new DoubleAnimation(x, new Duration(TimeSpan.FromMilliseconds(65)));
                 animation.EasingFunction = new PowerEase();
                 translation.BeginAnimation(TranslateTransform.XProperty, animation);
@@ -170,7 +111,8 @@ namespace MarkerBoard
         private void Slider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             var slider = sender as Slider;
-            drawingSize = slider.Value;
+            inkCanvas.DefaultDrawingAttributes.Width = slider.Value;
+            inkCanvas.DefaultDrawingAttributes.Height = slider.Value;
         }
 
         private void Slider_MouseMove(object sender, MouseEventArgs e)
@@ -188,5 +130,31 @@ namespace MarkerBoard
                 }
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            int buttonTag = Convert.ToInt32(button.Tag);
+
+            inkCanvas.DefaultDrawingAttributes.Color = colors[buttonTag];
+        }
+
+        private void CopyToClipboard_Click(object sender, RoutedEventArgs e)
+        {
+            int width = (int)inkCanvas.ActualWidth;
+            int height = (int)inkCanvas.ActualHeight;
+
+            RenderTargetBitmap rtb = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+
+            rtb.Render(inkCanvas);
+
+            Clipboard.SetImage(rtb);
+        }
+
+        private void ClearCanvas_Click(object sender, RoutedEventArgs e)
+        {
+            inkCanvas.BeginAnimation(OpacityProperty, hideAnimation);
+        }
     }
 }
+

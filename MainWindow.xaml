@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         AllowsTransparency="True"
         WindowStyle="None"
-        Title="MainWindow" Height="700" Width="1300" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Transparent">
+        Title="MainWindow" Height="800" Width="1350" WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Background="Transparent">
 
     <Grid Margin="4" ClipToBounds="True">
 
@@ -17,21 +17,31 @@
         </Grid.ColumnDefinitions>
 
 
-        <Border Background="White" CornerRadius="20" Grid.ColumnSpan="2">
-            <Border.Effect>
-                <DropShadowEffect ShadowDepth="0" BlurRadius="50"/>
-            </Border.Effect>
-        </Border>
+        <Border Background="White" CornerRadius="20" Grid.ColumnSpan="2"/>
+
+        <InkCanvas  x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" Cursor="Pen" Background="White"/>
 
 
-        <InkCanvas  x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" MouseMove="inkCanvas_MouseMove" Cursor="Pen" Background="White"/>
+        <WrapPanel Margin="-168,5,1060,5" Grid.ColumnSpan="2" x:Name="InstrumentPanel" RenderTransformOrigin="0,0.5">
+            <WrapPanel.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform ScaleX="1"/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </WrapPanel.RenderTransform>
 
-
-        <WrapPanel Margin="-168,5,1060,5" Grid.ColumnSpan="2" x:Name="InstrumentPanel">
+            <Button Style="{StaticResource controlDefault}" Width="20" Height="20" Margin="180,3,0,0">
+                <Image Source="/minimize.png"  />
+            </Button>
+            <Button Style="{StaticResource controlDefault}" Width="20" Height="20"  Margin="5,3,0,0" >
+                <Image Source="/close.png"/>
+            </Button>
 
             <Image x:Name="Eraser" Source="/eraser.png" Margin="40, 20, 0, 10" Height="100" Width="200" MouseLeftButtonDown="Eraser_MouseLeftButtonDown" MouseLeftButtonUp="Eraser_MouseLeftButtonUp"/>
 
-            <Button Margin="0, 5, 5, 5" Height="55" Width="250" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
+            <Button Tag="3" Margin="0, 5, 5, 5" Height="55" Width="250" Click="Button_Click" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{x:Null}">
                 <Image Source="/marker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
@@ -41,7 +51,7 @@
 
             <Image Margin="50"/>
 
-            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button Tag="0" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
                 <Image Source="/blueMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
@@ -49,25 +59,22 @@
                 </Image>
 
             </Button>
-            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button Tag="1" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
                 <Image Source="/redMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
             </Button>
-            <Button Height="60" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}">
+            <Button Tag="2" Height="56" Width="240" Margin="0, 5, 5, 5" Background="{x:Null}" BorderBrush="{x:Null}" Click="Button_Click">
                 <Image Source="/greenMarker.png" Margin="70, 0, 0, 0">
-                     <Image.Effect>
+                    <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
             </Button>
-
-            <Slider Orientation="Vertical" Maximum="30" Minimum="5" ValueChanged="Slider_ValueChanged" Height="150" Margin="200,42,0,41" MouseMove="Slider_MouseMove">
-
-            </Slider>
-            <RadioButton x:Name="brushScaleImage" RenderTransformOrigin="0.5,0.5" Height="15" IsEnabled="False" Margin="10">
+            <Slider Orientation="Vertical" Maximum="30" Minimum="3" ValueChanged="Slider_ValueChanged" Height="150" Margin="190,50,0,30" MouseMove="Slider_MouseMove" Value="10"/>
+            <RadioButton x:Name="brushScaleImage" RenderTransformOrigin="0.5,0.5" Height="15" IsEnabled="False" Margin="12">
                 <RadioButton.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="2" ScaleY="2"/>
@@ -77,6 +84,14 @@
                     </TransformGroup>
                 </RadioButton.RenderTransform>
             </RadioButton>
+
+            <Button Style="{StaticResource controlDefault}" Margin="180,10,0,0" Height="38" Width="38" Click="CopyToClipboard_Click">
+                <Image Source="/copy.png" />
+            </Button>
+
+            <Button Style="{StaticResource controlDefault}" Margin="10,10,0,0" Height="41" Width="41" Click="ClearCanvas_Click">
+                <Image Source="/clear.png"/>
+            </Button>
         </WrapPanel>
 
         <Grid Margin="15,444,0,15">

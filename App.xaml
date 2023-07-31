@@ -42,9 +42,7 @@
                     <Trigger.EnterActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                
-                                
-                                
+                                <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="0.7" Duration="0:0:0.1"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.EnterActions>
@@ -52,7 +50,7 @@
                     <Trigger.ExitActions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="0.85" Duration="0:0:0.4"/>
+                                <DoubleAnimation AccelerationRatio="0.1" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.4"/>
                             </Storyboard>
                         </BeginStoryboard>
                     </Trigger.ExitActions>

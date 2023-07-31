@@ -9,17 +9,25 @@
 
   <ItemGroup>
     <None Remove="blueMarker.png" />
+    <None Remove="clear.png" />
+    <None Remove="close.png" />
+    <None Remove="copy.png" />
     <None Remove="eraser.png" />
     <None Remove="greenMarker.png" />
     <None Remove="marker.png" />
+    <None Remove="minimize.png" />
     <None Remove="redMarker.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="blueMarker.png" />
+    <Resource Include="clear.png" />
+    <Resource Include="close.png" />
+    <Resource Include="copy.png" />
     <Resource Include="eraser.png" />
     <Resource Include="greenMarker.png" />
     <Resource Include="marker.png" />
+    <Resource Include="minimize.png" />
     <Resource Include="redMarker.png" />
   </ItemGroup>
 
