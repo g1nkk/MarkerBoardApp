@@ -15,6 +15,17 @@
     <None Remove="eraser.png" />
     <None Remove="greenMarker.png" />
     <None Remove="hide.png" />
+    <None Remove="icons\blueMarker.png" />
+    <None Remove="icons\clear.png" />
+    <None Remove="icons\close.png" />
+    <None Remove="icons\copy.png" />
+    <None Remove="icons\eraser.png" />
+    <None Remove="icons\greenMarker.png" />
+    <None Remove="icons\hide.png" />
+    <None Remove="icons\marker.png" />
+    <None Remove="icons\minimize.png" />
+    <None Remove="icons\redMarker.png" />
+    <None Remove="icons\show.png" />
     <None Remove="marker.png" />
     <None Remove="minimize.png" />
     <None Remove="redMarker.png" />
@@ -22,17 +33,21 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="blueMarker.png" />
-    <Resource Include="clear.png" />
-    <Resource Include="close.png" />
-    <Resource Include="copy.png" />
-    <Resource Include="eraser.png" />
-    <Resource Include="greenMarker.png" />
-    <Resource Include="hide.png" />
-    <Resource Include="marker.png" />
-    <Resource Include="minimize.png" />
-    <Resource Include="redMarker.png" />
-    <Resource Include="show.png" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons\blueMarker.png" />
+    <Resource Include="icons\clear.png" />
+    <Resource Include="icons\close.png" />
+    <Resource Include="icons\copy.png" />
+    <Resource Include="icons\eraser.png" />
+    <Resource Include="icons\greenMarker.png" />
+    <Resource Include="icons\hide.png" />
+    <Resource Include="icons\marker.png" />
+    <Resource Include="icons\minimize.png" />
+    <Resource Include="icons\redMarker.png" />
+    <Resource Include="icons\show.png" />
   </ItemGroup>
 
 </Project>

@@ -17,11 +17,11 @@
         </Grid.ColumnDefinitions>
 
         <Border Background="White" CornerRadius="20" Grid.ColumnSpan="2"/>
-
+        
         <InkCanvas x:Name="inkCanvas" Grid.ColumnSpan="2" Margin="6" Cursor="Pen" Background="White" EditingModeInverted="EraseByPoint"/>
 
-        <Button x:Name="showButton" Opacity="0" HorizontalAlignment="Left" Style="{StaticResource controlDefault}" Click="ShowButton_Click">
-            <Image  Height="50" Source="/show.png"/>
+        <Button x:Name="showButton" Opacity="0" HorizontalAlignment="Left" Style="{StaticResource controlDefault}" Command="{Binding ShowButtonClick}">
+            <Image  Height="50" Source="/icons/show.png"/>
         </Button>
 
         <WrapPanel x:Name="InstrumentPanel" Margin="-168,5,1060,5" Grid.ColumnSpan="2" RenderTransformOrigin="0.25,0.5">
@@ -34,23 +34,23 @@
                 </TransformGroup>
             </WrapPanel.RenderTransform>
 
-            <Button Style="{StaticResource controlDefault}" Width="20" Height="20" Margin="180,3,0,0" Click="MinimizeButton_Click">
-                <Image Source="/minimize.png"  />
+            <Button Style="{StaticResource controlDefault}" Width="20" Height="20" Margin="180,3,0,0" Command="{Binding MinimizeButtonClick}">
+                <Image Source="/icons/minimize.png"  />
             </Button>
-            <Button Style="{StaticResource controlDefault}" Width="20" Height="20"  Margin="5,3,0,0" Click="CloseButton_Click" >
-                <Image Source="/close.png"/>
-            </Button>
-
-            <Button Style="{StaticResource controlDefault}" Width="21" Height="21"  Margin="5,3,0,0" Click="HideButton_Click" >
-                <Image Source="/hide.png"/>
+            <Button Style="{StaticResource controlDefault}" Width="20" Height="20"  Margin="5,3,0,0" Command="{Binding CloseButtonClick}">
+                <Image Source="/icons/close.png"/>
             </Button>
 
-            <Button Tag="4" Style="{StaticResource markers}"  Margin="0, 5, 5, 5" x:Name="Eraser" Click="Button_Click">
-                <Image  Source="/eraser.png" Margin="40, 20, 0, 0" Height="100" Width="200" MouseLeftButtonDown="Eraser_MouseLeftButtonDown" MouseLeftButtonUp="Eraser_MouseLeftButtonUp"/>
+            <Button Style="{StaticResource controlDefault}" Width="21" Height="21"  Margin="5,3,0,0" Command="{Binding HideButtonClick}">
+                <Image Source="/icons/hide.png"/>
             </Button>
 
-            <Button Tag="3" Style="{StaticResource markers}" x:Name="defaultMarker"  Margin="0, 5, 5, 5" Height="55" Width="250" Click="Button_Click">
-                <Image Source="/marker.png" Margin="70, 0, 0, 0">
+            <Button Tag="4" Style="{StaticResource markers}"  Margin="0, 5, 5, 5" x:Name="Eraser" Click="MarkerButtonClick">
+                <Image  Source="/icons/eraser.png" Margin="40, 20, 0, 0" Height="100" Width="200"/>
+            </Button>
+
+            <Button Tag="3" Style="{StaticResource markers}" x:Name="defaultMarker"  Margin="0, 5, 5, 5" Height="55" Width="250" Click="MarkerButtonClick">
+                <Image Source="/icons/marker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
@@ -59,23 +59,23 @@
 
             <Image Margin="50"/>
 
-            <Button Tag="0" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
-                <Image Source="/blueMarker.png" Margin="70, 0, 0, 0">
+            <Button Tag="0" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="MarkerButtonClick">
+                <Image Source="/icons/blueMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
 
             </Button>
-            <Button Tag="1" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
-                <Image Source="/redMarker.png" Margin="70, 0, 0, 0">
+            <Button Tag="1" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="MarkerButtonClick">
+                <Image Source="/icons/redMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
                 </Image>
             </Button>
-            <Button Tag="2" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="Button_Click">
-                <Image Source="/greenMarker.png" Margin="70, 0, 0, 0">
+            <Button Tag="2" Style="{StaticResource markers}" Height="56" Width="240" Margin="0, 5, 5, 5" Click="MarkerButtonClick">
+                <Image Source="/icons/greenMarker.png" Margin="70, 0, 0, 0">
                     <Image.Effect>
                         <DropShadowEffect ShadowDepth="0" Color="White"/>
                     </Image.Effect>
@@ -93,16 +93,16 @@
                 </RadioButton.RenderTransform>
             </RadioButton>
 
-            <Button Style="{StaticResource controlDefault}" Margin="180,10,0,0" Height="38" Width="38" Click="CopyToClipboard_Click">
-                <Image Source="/copy.png" />
+            <Button Style="{StaticResource controlDefault}" Margin="180,10,0,0" Height="38" Width="38" Command="{Binding CopyToClipboardClick}">
+                <Image Source="/icons/copy.png" />
             </Button>
 
-            <Button Style="{StaticResource controlDefault}" Margin="10,10,0,0" Height="41" Width="41" Click="ClearCanvas_Click">
-                <Image Source="/clear.png"/>
+            <Button Style="{StaticResource controlDefault}" Margin="10,10,0,0" Height="41" Width="41" Command="{Binding ClearCanvasClick}">
+                <Image Source="/icons/clear.png"/>
             </Button>
         </WrapPanel>
 
-        <Border Opacity="0" x:Name="NotificationsPanel" Margin="450,680,450,70" Grid.ColumnSpan="2" CornerRadius="25" Background="#FFE2E4FF">
+        <Border Opacity="0" x:Name="NotificationsPanel" Margin="450,680,450,70" Grid.ColumnSpan="2" CornerRadius="25" Background="#FFECF5FF">
             <TextBlock x:Name="NotificationsText" Text="MESSAGE" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="20" FontFamily="Bahnschrift" Foreground="#FF292929"/>
         </Border>
     </Grid>

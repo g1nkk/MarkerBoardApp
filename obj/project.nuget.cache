@@ -1,8 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "764hddi1jz6djN91VFximCfednM1YbBmaM5yCknSRVm6zq3CY9zqk4hg2W6/TFKoPpkzWUR5FlIFFupQqnrS6w==",
+  "dgSpecHash": "wrCc4wtePL+GyV8jpWeYuy9oAP4ImWQ1esr/Jpjz61qwZg17DsXpkWpl5VwsNS5n1Bf/N73w3YH3qZCXEfqRPg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Kirill\\source\\repos\\MarkerBoard\\MarkerBoard\\MarkerBoard.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Kirill\\.nuget\\packages\\communitytoolkit.mvvm\\8.2.1\\communitytoolkit.mvvm.8.2.1.nupkg.sha512"
+  ],
   "logs": []
 }

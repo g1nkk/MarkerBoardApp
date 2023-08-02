@@ -9,6 +9,8 @@
             <Setter Property="RenderOptions.BitmapScalingMode" Value="Fant"/>
             <Setter Property="RenderOptions.EdgeMode" Value="Aliased"/>
         </Style>
+       
+
 
         <Style x:Key="controlDefault" TargetType="Button">
             <Setter Property="RenderOptions.BitmapScalingMode" Value="HighQuality" />

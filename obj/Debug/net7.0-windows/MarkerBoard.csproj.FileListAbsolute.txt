@@ -20,3 +20,5 @@ C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\obj\Debug\net7.0-windows\re
 C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\obj\Debug\net7.0-windows\MarkerBoard.pdb
 C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\obj\Debug\net7.0-windows\MarkerBoard.genruntimeconfig.cache
 C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\obj\Debug\net7.0-windows\ref\MarkerBoard.dll
+C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\bin\Debug\net7.0-windows\CommunityToolkit.Mvvm.dll
+C:\Users\Kirill\source\repos\MarkerBoard\MarkerBoard\obj\Debug\net7.0-windows\MarkerBoard.csproj.CopyComplete
