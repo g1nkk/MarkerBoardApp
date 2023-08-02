@@ -1,6 +1,6 @@
 ## MarkerBoard
 
-#### MarkerBoard is a lightweight and intuitively designed minimalist marker board app, designed to help you jot down notes, ideas, and visual support materials with ease. Its simplicity and user-friendliness make it the perfect choice for anyone looking to quickly and effortlessly record their thoughts and visualize ideas without unnecessary complexities.
+#### MarkerBoard is a lightweight and intuitively designed minimalist marker board WPF app, designed to help you jot down notes, ideas, and visual support materials with ease. Its simplicity and user-friendliness make it the perfect choice for anyone looking to quickly and effortlessly record their thoughts and visualize ideas without unnecessary complexities.
 
 
 
