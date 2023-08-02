@@ -16,5 +16,9 @@
  
 ![df gDFg dfg df](https://github.com/g1nkk/MarkerBoardApp/assets/53556562/a60b5215-f5b7-47ea-95b1-2b7d14143dcc)
 
+## Download
+
+Go To [Release Page] to download latest version for Windows 
 
 
+[Release Page]: <https://github.com/g1nkk/MarkerBoardApp/releases>
